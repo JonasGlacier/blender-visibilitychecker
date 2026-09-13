@@ -209,28 +209,23 @@ class VISIBILITYCHECKER_PT_panel(Panel):
             if item is None:
                 continue
 
-            box = layout.box()
-            header = box.row(align=True)
+            row = layout.row(align=True)
             icon = 'OBJECT_DATA' if issue.item_type == 'OBJECT' else 'OUTLINER_COLLECTION'
-            header.label(text=issue.name, icon=icon)
-            header.label(text=issue.item_type.title())
-
-            states = box.row(align=True)
-            states.label(
-                text="Viewport: Disabled" if item.hide_viewport else "Viewport: Enabled",
+            row.label(text=issue.name, icon=icon)
+            row.label(
+                text="",
                 icon='RESTRICT_VIEW_ON' if item.hide_viewport else 'RESTRICT_VIEW_OFF',
             )
-            states.label(
-                text="Render: Disabled" if item.hide_render else "Render: Enabled",
+            row.label(
+                text="",
                 icon='RESTRICT_RENDER_ON' if item.hide_render else 'RESTRICT_RENDER_OFF',
             )
 
-            actions = box.row(align=True)
-            sync = actions.operator(VISIBILITYCHECKER_OT_sync_one.bl_idname, text="Match Render")
+            sync = row.operator(VISIBILITYCHECKER_OT_sync_one.bl_idname, text="", icon='CHECKMARK')
             sync.item_type = issue.item_type
             sync.item_name = issue.name
             if issue.item_type == 'OBJECT':
-                select = actions.operator(VISIBILITYCHECKER_OT_select_object.bl_idname, text="Select")
+                select = row.operator(VISIBILITYCHECKER_OT_select_object.bl_idname, text="", icon='RESTRICT_SELECT_OFF')
                 select.object_name = issue.name
 
 
