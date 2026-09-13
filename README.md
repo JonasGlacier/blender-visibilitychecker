@@ -14,7 +14,7 @@ It deliberately does not read or change the Outliner eye icon (`Hide in Viewport
 1. In Blender, open **Edit > Preferences > Add-ons**.
 2. Click the drop-down beside **Install...** and select `visibility_checker.py`.
 3. Enable **Scene: Visibility Checker**.
-4. In a 3D Viewport, press `N` and open the **CHECK VISIBILITY** tab.
+4. In a 3D Viewport, press `N` and open the **👁️** tab.
 
 ## Use
 

@@ -3,7 +3,7 @@ bl_info = {
     "author": "OpenCode",
     "version": (1, 0, 0),
     "blender": (4, 2, 0),
-    "location": "View3D > Sidebar > CHECK VISIBILITY",
+    "location": "View3D > Sidebar > 👁️",
     "description": "Find and synchronize viewport and render restriction flags",
     "category": "Scene",
 }
@@ -188,7 +188,7 @@ class VISIBILITYCHECKER_PT_panel(Panel):
     bl_idname = "VISIBILITYCHECKER_PT_panel"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    bl_category = "CHECK VISIBILITY"
+    bl_category = "👁️"
 
     def draw(self, context):
         layout = self.layout
