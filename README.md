@@ -20,6 +20,6 @@ It deliberately does not read or change the Outliner eye icon (`Hide in Viewport
 
 1. Click **Refresh** to scan the current scene.
 2. Review mismatched Objects and Collections in the panel.
-3. Click **Match Render** for an individual item, or **Fix All** to set every item's `hide_render` equal to its `hide_viewport` value.
+3. Click **Match Render** for an individual item, or **Fix All** to set every item's `hide_render` equal to its `hide_viewport` value. After **Fix All**, all modified Objects that are visible in the active View Layer are selected. Objects disabled for selection are made selectable first.
 
 Linked data that cannot be edited is skipped and reported by Blender.

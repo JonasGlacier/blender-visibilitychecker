@@ -94,6 +94,7 @@ class VISIBILITYCHECKER_OT_sync_all(Operator):
         scene = context.scene
         updated = 0
         skipped = 0
+        updated_objects = []
 
         for item in [*scene.objects, *scene_collections(scene)]:
             if item.hide_viewport == item.hide_render:
@@ -101,12 +102,33 @@ class VISIBILITYCHECKER_OT_sync_all(Operator):
             try:
                 item.hide_render = item.hide_viewport
                 updated += 1
+                if isinstance(item, bpy.types.Object):
+                    updated_objects.append(item)
             except RuntimeError:
                 # Linked data may not be editable in the current file.
                 skipped += 1
 
+        selectable_objects = []
+        for obj in updated_objects:
+            if not obj.visible_get(view_layer=context.view_layer):
+                continue
+            try:
+                obj.hide_select = False
+                selectable_objects.append(obj)
+            except RuntimeError:
+                skipped += 1
+
+        if selectable_objects:
+            for obj in context.selected_objects:
+                obj.select_set(False)
+            for obj in selectable_objects:
+                obj.select_set(True)
+            context.view_layer.objects.active = selectable_objects[0]
+
         refresh_issues(scene)
         message = f"Synchronized {updated} item(s)"
+        if selectable_objects:
+            message += f"; selected {len(selectable_objects)} visible object(s)"
         if skipped:
             message += f"; skipped {skipped} non-editable item(s)"
         self.report({'INFO'}, message)
