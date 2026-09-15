@@ -56,6 +56,20 @@ def item_from_issue(issue):
     return issue.collection
 
 
+def unhide_layer_collection(layer_collection, target):
+    """Unhide the layer-collection path containing target."""
+    for child in layer_collection.children:
+        if child.collection == target:
+            child.hide_viewport = False
+            child.collection.hide_select = False
+            return True
+        if unhide_layer_collection(child, target):
+            layer_collection.hide_viewport = False
+            layer_collection.collection.hide_select = False
+            return True
+    return False
+
+
 class VISIBILITYCHECKER_PG_issue(PropertyGroup):
     item_type: EnumProperty(
         items=(
@@ -176,6 +190,15 @@ class VISIBILITYCHECKER_OT_select_object(Operator):
         if obj is None or context.view_layer.objects.get(obj.name) is None:
             self.report({'WARNING'}, "Object is not available in the active view layer")
             return {'CANCELLED'}
+
+        # Restore the visibility and selectability needed for an actual selection.
+        obj.hide_select = False
+        obj.hide_viewport = False
+        obj.hide_set(False)
+        for collection in obj.users_collection:
+            collection.hide_viewport = False
+            collection.hide_select = False
+            unhide_layer_collection(context.view_layer.layer_collection, collection)
 
         bpy.ops.object.select_all(action='DESELECT')
         obj.select_set(True)
